@@ -112,14 +112,22 @@ app.post("/api/users/:_id/exercises", (req, res) => {
       date: date,
     });
 
+    user = {
+      ...user,
+      description: String(description),
+      duration: parseInt(duration),
+      date: date,
+    };
+
     // add the log array to the user object in the users array
 
-    user.log = log;
+    // user.log = log;
     console.log(user);
     matchedUser = user;
   });
 
   res.json(matchedUser);
+  console.log(matchedUser);
 });
 
 // 2- ::GET => /api/users end-point
