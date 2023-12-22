@@ -90,11 +90,11 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   let matchedUser;
   const description = req.body.description;
   const duration = req.body.duration;
-  const date = req.body.date;
+  let date = new Date(req.body.date).toDateString();
   const userIdParam = req.params._id;
 
   if (!date || date === "") {
-    new Date().toDateString();
+    date = new Date().toDateString();
   }
 
   /* 
