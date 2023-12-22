@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 const users = [];
+const usersLogs = [];
 
 users.push({ username: "fcc_test", _id: "5fb5853f734231456ccb3b05" });
 
@@ -112,6 +113,11 @@ app.post("/api/users/:_id/exercises", (req, res) => {
       date: date,
     });
 
+    usersLogs.push({ ...user, log });
+
+    console.log(usersLogs);
+    console.log(usersLogs[0]);
+
     user = {
       ...user,
       description: String(description),
@@ -122,12 +128,12 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     // add the log array to the user object in the users array
 
     // user.log = log;
-    console.log(user);
+    // console.log(user);
     matchedUser = user;
   });
 
   res.json(matchedUser);
-  console.log(matchedUser);
+  // console.log(matchedUser);
 });
 
 // 2- ::GET => /api/users end-point
@@ -136,6 +142,16 @@ app.get("/api/users:_id/exercises", (req, res) => {
   const userName = req.body.username;
   console.log(userName);
   res.json({ username: userName });
+});
+
+// ::
+//  ==>--------Third route end-points----------<==
+// ::
+
+// 1- ::GET => /api/users end-point
+
+app.get("/api/users/:_id/logs", (req, res) => {
+  res.json("");
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
