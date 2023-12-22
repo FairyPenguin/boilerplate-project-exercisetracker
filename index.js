@@ -43,7 +43,7 @@ users.find((user) => {
   return (user.log = log);
 });
 
-console.log(users[0]);
+// console.log(users[0]);
 
 // const a = { description: "a object", duration: 60, date: "" };
 
@@ -62,7 +62,7 @@ app.post("/api/users", (req, res) => {
   //user id - randomly generated
   const userId = crypto.randomBytes(12).toString("hex");
 
-  usersArray.push({ userName, userId });
+  usersArray.push({ username: userName, _id: userId });
 
   res.json({ username: userName, _id: userId });
 });
