@@ -54,23 +54,29 @@ console.log(users[0]);
 
 const usersArray = [];
 
+// ::POST => /api/users end-point
+
 app.post("/api/users", (req, res) => {
   // username
   const userName = req.body.username;
   //user id - randomly generated
   const userId = crypto.randomBytes(12).toString("hex");
 
+  usersArray.push({ userName, userId });
+
   res.json({ username: userName, _id: userId });
+});
+
+// ::GET => /api/users end-point
+
+app.get("/api/users", (req, res) => {
+  res.json(usersArray);
 });
 
 app.post("/api/users:_id/exercises", (req, res) => {
   const userName = req.body.username;
   console.log(userName);
   res.json({ username: userName });
-});
-
-app.get("/", (req, res) => {
-  res.json("-------|------");
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
