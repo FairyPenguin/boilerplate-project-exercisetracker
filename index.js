@@ -250,7 +250,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
       return logDate >= fromDate && logDate <= toDate;
     });
 
-    const limitedLogs = filteredLogs.slice(0, limit);
+    const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
     console.log(limitedLogs);
 
