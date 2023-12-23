@@ -242,6 +242,10 @@ app.get("/api/users/:_id/logs", (req, res) => {
   // const To = undefined;
   // const Limit = undefined;
 
+  if (!from && !to && !limit) {
+    res.json(matchedRequestedUser);
+  }
+
   if (from && to && limit) {
     const fromDate = new Date(from).toDateString();
     const toDate = new Date(to).toDateString();
@@ -261,9 +265,60 @@ app.get("/api/users/:_id/logs", (req, res) => {
     console.log(limitedLogs);
 
     res.json(limitedLogs);
-  } else {
-    res.json(matchedRequestedUser);
   }
+
+  if (!from && !to && limit) {
+    let userLogs = matchedRequestedUser.log;
+
+    console.log("THE USER LOGS");
+    console.log(userLogs);
+
+    const limitedLogs = userLogs.slice(0, parseInt(limit));
+
+    console.log("limitedLogs *****");
+    console.log(limitedLogs);
+
+    res.json(limitedLogs);
+  }
+
+  if (from && to && !limit) {
+    const fromDate = new Date(from).toDateString();
+    const toDate = new Date(to).toDateString();
+
+    let userLogs = matchedRequestedUser.log;
+    console.log("THE USER LOGS");
+    console.log(userLogs);
+
+    let filteredLogs = userLogs.filter((log) => {
+      const logDate = log.date;
+      return logDate >= fromDate && logDate <= toDate;
+    });
+
+    res.json(filteredLogs);
+  }
+
+  // if (from && to && limit) {
+  //   const fromDate = new Date(from).toDateString();
+  //   const toDate = new Date(to).toDateString();
+
+  //   let userLogs = matchedRequestedUser.log;
+  //   console.log("THE USER LOGS");
+  //   console.log(userLogs);
+
+  //   let filteredLogs = userLogs.filter((log) => {
+  //     const logDate = log.date;
+  //     return logDate >= fromDate && logDate <= toDate;
+  //   });
+
+  //   const limitedLogs = filteredLogs.slice(0, parseInt(limit));
+
+  //   console.log("limitedLogs *****");
+  //   console.log(limitedLogs);
+
+  //   res.json(limitedLogs);
+  // } else {
+  //   res.json(matchedRequestedUser);
+  // }
 
   // res.json({
   //   requestedUserId: requestedUserId,

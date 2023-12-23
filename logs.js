@@ -1,3 +1,19 @@
+// if (!from && !to && !limit) {
+//   res.json("");
+// }
+
+// if (from && to && limit) {
+//   res.json("");
+// }
+
+// if (!from && !to && limit) {
+//   res.json("");
+// }
+
+// if (from && to && !limit) {
+//   res.json("");
+// }
+
 const logs = [
   {
     username: "fcc_test",
