@@ -3,7 +3,6 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const crypto = require("crypto");
-const { truncate } = require("fs");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -60,8 +59,10 @@ console.log(usersArray);
 console.log("users Array ---------End--------");
 
 // UsersLogs Array
-
+console.log("usersLogs Array 👇👇");
 const usersLogs = [];
+console.log(usersLogs);
+console.log("users Logs ---------End--------");
 
 // ::
 //  ==>--------First route end-points----------<==
@@ -128,8 +129,8 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   // let excercisesCount = 0;
   // mathced user
 
-  const description = req.body.description;
-  const duration = req.body.duration;
+  const description = String(req.body.description);
+  const duration = parseInt(req.body.duration);
   let date = new Date(req.body.date).toDateString();
   const userIdParam = req.params._id;
   console.log(userIdParam);
@@ -153,7 +154,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     username: matchedUser.username,
     _id: matchedUser._id,
     description: description,
-    duration: parseInt(duration),
+    duration: duration,
     date: date,
   });
 
@@ -168,58 +169,36 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   console.log(usersArray);
 
-  // let matchedUserId = usersArray.find((user) => {
-  //   return user._id === userIdParam;
-  // });
+  // :: Check for the log property exsits in the matcherUser object
 
-  // console.log(matchedUserId);
+  if (!matchedUser.log) {
+    // if not exists => create the log property = []
+    matchedUser.log = [];
+  }
 
-  // pusth the exercise data to the log array
+  // Push to the log array [] the matchedUser excerise data object = {}
 
-  // let userExerciseData = {
-  //   description: String(description),
-  //   duration: parseInt(duration),
-  //   date: date,
-  // };
+  matchedUser.log.push({
+    username: matchedUser.username,
+    _id: matchedUser._id,
+    description: description,
+    duration: parseInt(duration),
+    date: date,
+  });
 
-  // log.push(userExerciseData);
+  console.log("After the Log Added 👇👇👇👇👇");
+  console.log(matchedUser);
+
+  // Push to the users logs array
+
+  usersLogs.push(matchedUser);
 
   console.log("The Log Array from POST Req :: after push user-excer-data 👇");
 
-  // excercisesCount++;
-
-  /* 
-    push to the main usersLogs Array [] 
-    1- log array[description,duration,date] +
-    2- count +
-    3- user object {username,_id} 
-    */
-  // usersLogs.push({ ...user, log });
-
-  // user = {
-  //   ...user,
-  //   description: String(description),
-  //   duration: parseInt(duration),
-  //   date: date,
-  // };
-
   console.log("The usersLogs Array from POST Req :: 👇");
-
   console.log(usersLogs);
-  console.log(`-------------------------
-    -------------------------
-`);
-  // console.log(usersLogs[0]);
-
-  // add the log array to the user object in the users array
-
-  // user.log = log;
-  // console.log(user);
-
-  // console.log(matchedUser);
+  console.log(`--------------End of usersLogs in /logs-----------`);
 });
-
-// 2- ::GET => /api/users end-point
 
 // ::
 //  ==>--------Third route end-points----------<==
