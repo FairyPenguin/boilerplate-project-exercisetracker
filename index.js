@@ -132,7 +132,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   const description = String(req.body.description);
   const duration = parseInt(req.body.duration);
-  let date = new Date(req.body.date).toDateString();
+  let date = new Date(req.body.date);
   const userIdParam = req.params._id;
   console.log(userIdParam);
   if (!date || date === "") {
@@ -156,7 +156,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     _id: matchedUser._id,
     description: description,
     duration: duration,
-    date: date,
+    date: date.toDateString(),
   });
 
   console.log("Returned Res for the matched user");
@@ -181,7 +181,6 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   if (!matchedUser.count) {
     // if not exists => create the count property = number
-
     matchedUser.count = parseInt(excercisesCount);
   }
 
@@ -195,7 +194,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     _id: matchedUser._id,
     description: description,
     duration: parseInt(duration),
-    date: date,
+    date: date.toDateString(),
   });
 
   console.log("After the Log Added 👇👇👇👇👇");
@@ -219,7 +218,6 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 // 1- ::GET => /api/users end-point
 
 app.get("/api/users/:_id/logs", (req, res) => {
-  
   const requestedUserId = req.params._id;
 
   matchedRequestedUser = usersLogs.find((user) => {
@@ -231,6 +229,10 @@ app.get("/api/users/:_id/logs", (req, res) => {
   res.json(matchedRequestedUser);
   console.log("-----------End-----------");
 });
+
+// :: ->> Logic functions
+
+// Server listens on port 3000
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log("Your app is listening on port " + listener.address().port);
