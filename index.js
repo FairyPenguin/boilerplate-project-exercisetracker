@@ -3,7 +3,8 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const crypto = require("crypto");
-const { count } = require("console");
+
+const logs = require("./logs");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -221,15 +222,54 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 // 1- ::GET => /api/users end-point
 
 app.get("/api/users/:_id/logs", (req, res) => {
+  // id param
   const requestedUserId = req.params._id;
+  //qyery params {from - to - limit}
+  const { from, to, limit } = req.query;
 
   matchedRequestedUser = usersLogs.find((user) => {
     return user._id === requestedUserId;
   });
 
+  // const From = "Mon Jan 01 1990";
+  // const To = "Tue Jun 06 2006";
+  // const Limit = 3;
+
+  // const From = undefined;
+  // const To = undefined;
+  // const Limit = undefined;
+
+  if (from && to && limit) {
+    const fromDate = new Date(from).toDateString();
+    const toDate = new Date(to).toDateString();
+
+    let userLogs = matchedRequestedUser.log;
+
+    let filteredLogs = userLogs.filter((log) => {
+      const logDate = log.date;
+      return logDate >= fromDate && logDate <= toDate;
+    });
+
+    const limitedLogs = filteredLogs.slice(0, limit);
+
+    console.log(limitedLogs);
+
+    res.json(limitedLogs);
+  } else {
+    res.json(matchedRequestedUser);
+  }
+
+  // res.json({
+  //   requestedUserId: requestedUserId,
+  //   from: from,
+  //   to: to,
+  //   limit: limit,
+  //   // logs: userLogs,
+  // });
+
   console.log("The Matched User from the GET Req :: 👇");
   // console.log(matchedRequestedUsermatchedRequestedUser);
-  res.json(matchedRequestedUser);
+  // res.json(matchedRequestedUser);
   console.log("-----------End-----------");
 });
 
