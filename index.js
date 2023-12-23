@@ -148,7 +148,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   res.json({
     username: matchedUser.username,
-    id: matchedUser._id,
+    _id: matchedUser._id,
     description: description,
     duration: duration,
     date: date,
