@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const crypto = require("crypto");
+const { count } = require("console");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -126,7 +127,7 @@ app.get("/api/users", (req, res) => {
 app.post("/api/users/:_id/exercises", (req, res) => {
   //excersices log array
   //ecercises count
-  // let excercisesCount = 0;
+  let excercisesCount = 0;
   // mathced user
 
   const description = String(req.body.description);
@@ -176,6 +177,17 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     matchedUser.log = [];
   }
 
+  // :: Check for the count property exsits in the matcherUser object
+
+  if (!matchedUser.count) {
+    // if not exists => create the count property = number
+
+    matchedUser.count = parseInt(excercisesCount);
+  }
+
+  // incremnet the excercises count property
+  matchedUser.count++;
+
   // Push to the log array [] the matchedUser excerise data object = {}
 
   matchedUser.log.push({
@@ -207,19 +219,17 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 // 1- ::GET => /api/users end-point
 
 app.get("/api/users/:_id/logs", (req, res) => {
+  
   const requestedUserId = req.params._id;
 
-  //   matchedUser = usersLogs.find((user) => {
-  //     return user._id === requestedUserId;
+  matchedRequestedUser = usersLogs.find((user) => {
+    return user._id === requestedUserId;
+  });
 
-  //     console.log("The Matched User from the GET Req :: 👇");
-  //     console.log(matchedUser);
-  //     console.log(`-------------------------
-  //     -------------------------
-  // `);
-  //   });
-
-  // res.json(matchedUser);
+  console.log("The Matched User from the GET Req :: 👇");
+  // console.log(matchedRequestedUsermatchedRequestedUser);
+  res.json(matchedRequestedUser);
+  console.log("-----------End-----------");
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
