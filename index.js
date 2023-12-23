@@ -5,6 +5,7 @@ require("dotenv").config();
 const crypto = require("crypto");
 
 const logs = require("./logs");
+const { log } = require("console");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -194,8 +195,8 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   // Push to the log array [] the matchedUser excerise data object = {}
 
   matchedUser.log.push({
-    username: matchedUser.username,
-    _id: matchedUser._id,
+    // username: matchedUser.username,
+    // _id: matchedUser._id,
     description: description,
     duration: parseInt(duration),
     date: new Date(date).toDateString(),
@@ -227,6 +228,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
   //qyery params {from - to - limit}
   const { from, to, limit } = req.query;
 
+  log(from, to, limit);
+
   matchedRequestedUser = usersLogs.find((user) => {
     return user._id === requestedUserId;
   });
@@ -244,6 +247,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const toDate = new Date(to).toDateString();
 
     let userLogs = matchedRequestedUser.log;
+    console.log("THE USER LOGS");
+    console.log(userLogs);
 
     let filteredLogs = userLogs.filter((log) => {
       const logDate = log.date;
@@ -252,6 +257,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
+    console.log("limitedLogs *****");
     console.log(limitedLogs);
 
     res.json(limitedLogs);
