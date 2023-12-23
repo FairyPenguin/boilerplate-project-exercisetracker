@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const crypto = require("crypto");
+const { truncate } = require("fs");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -13,11 +14,10 @@ app.get("/", (req, res) => {
 });
 
 const users = [];
-const usersLogs = [];
 
 users.push({ username: "fcc_test", _id: "5fb5853f734231456ccb3b05" });
 
-let log = [];
+// let log = [];
 
 let exercisesCount = 0;
 
@@ -33,7 +33,7 @@ users.find((user) => {
   if (!objectToPush.date || objectToPush.date === "") {
     objectToPush.date = new Date().toDateString();
   }
-  log.push(objectToPush);
+  // log.push(objectToPush);
 
   const count = exercisesCount;
 
@@ -41,7 +41,7 @@ users.find((user) => {
 
   user.count = count;
 
-  return (user.log = log);
+  // return (user.log = log);
 });
 
 // console.log(users[0]);
@@ -53,8 +53,12 @@ users.find((user) => {
 //   console.log(a);
 // }
 
-// Users Arrays
-const usersArray = [];
+// Users Array
+const usersArray = ["users Array"];
+console.log(usersArray);
+// UsersLogs Array
+
+const usersLogs = [];
 
 // ::
 //  ==>--------First route end-points----------<==
@@ -68,15 +72,45 @@ app.post("/api/users", (req, res) => {
   //user id - randomly generated
   const userId = crypto.randomBytes(12).toString("hex");
 
-  usersArray.push({ username: userName, _id: userId });
+  // Check (by username property) if the user is user exists
+  // return true || false
+  const userNameChecker = usersArray.some((user) => {
+    return user.username === userName;
+  });
 
-  res.json({ username: userName, _id: userId });
+  console.log(userNameChecker);
+
+  if (userNameChecker) {
+    // find matching user
+    const userFinder = usersArray.find((user) => {
+      return user.username === userName;
+      // return matching user
+    });
+
+    // response with the matching user
+    res.json(userFinder);
+  } else {
+    // create new user
+    const newUser = { username: userName, _id: userId };
+
+    // Push the new created user to the users array []
+    usersArray.push(newUser);
+
+    // response with the new created user
+    res.json(newUser);
+  }
 });
 
 // 2- ::GET => /api/users end-point
 
 app.get("/api/users", (req, res) => {
   res.json(usersArray);
+
+  console.log("Users Array from GET req to /api/users 👇");
+  console.log(usersArray);
+  console.log(`-------------------------
+               -------------------------
+  `);
 });
 
 // ::
@@ -87,13 +121,15 @@ app.get("/api/users", (req, res) => {
 
 app.post("/api/users/:_id/exercises", (req, res) => {
   //excersices log array
-  const log = [];
-  let matchedUser;
+  //ecercises count
+  // let excercisesCount = 0;
+  // mathced user
+
   const description = req.body.description;
   const duration = req.body.duration;
   let date = new Date(req.body.date).toDateString();
   const userIdParam = req.params._id;
-
+  console.log(userIdParam);
   if (!date || date === "") {
     date = new Date().toDateString();
   }
@@ -102,47 +138,76 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   match the user id from the excercise data to the user
   id in the users array
     */
-  usersArray.find((user) => {
-    user._id === userIdParam;
-
-    // pusth the exercise data to the log array
-
-    log.push({
-      description: String(description),
-      duration: parseInt(duration),
-      date: date,
-    });
-
-    usersLogs.push({ ...user, log });
-
-    console.log(usersLogs);
-    console.log(usersLogs[0]);
-
-    user = {
-      ...user,
-      description: String(description),
-      duration: parseInt(duration),
-      date: date,
-    };
-
-    // add the log array to the user object in the users array
-
-    // user.log = log;
-    // console.log(user);
-    matchedUser = user;
+  let matchedUser = usersArray.find((user) => {
+    return user._id === userIdParam;
   });
 
-  res.json(matchedUser);
+  // console.log("The matched user with id :: 👇");
+
+  console.log(matchedUser);
+
+  res.json({
+    username: matchedUser.username,
+    id: matchedUser._id,
+    description: description,
+    duration: duration,
+    date: date,
+  });
+
+  console.log(usersArray);
+
+  let matchedUserId = usersArray.find((user) => {
+    return user._id === userIdParam;
+  });
+
+  console.log(matchedUserId);
+
+  // pusth the exercise data to the log array
+
+  // let userExerciseData = {
+  //   description: String(description),
+  //   duration: parseInt(duration),
+  //   date: date,
+  // };
+
+  // log.push(userExerciseData);
+
+  console.log("The Log Array from POST Req :: after push user-excer-data 👇");
+
+  // excercisesCount++;
+
+  /* 
+    push to the main usersLogs Array [] 
+    1- log array[description,duration,date] +
+    2- count +
+    3- user object {username,_id} 
+    */
+  // usersLogs.push({ ...user, log });
+
+  // user = {
+  //   ...user,
+  //   description: String(description),
+  //   duration: parseInt(duration),
+  //   date: date,
+  // };
+
+  console.log("The usersLogs Array from POST Req :: 👇");
+
+  console.log(usersLogs);
+  console.log(`-------------------------
+    -------------------------
+`);
+  // console.log(usersLogs[0]);
+
+  // add the log array to the user object in the users array
+
+  // user.log = log;
+  // console.log(user);
+
   // console.log(matchedUser);
 });
 
 // 2- ::GET => /api/users end-point
-
-app.get("/api/users:_id/exercises", (req, res) => {
-  const userName = req.body.username;
-  console.log(userName);
-  res.json({ username: userName });
-});
 
 // ::
 //  ==>--------Third route end-points----------<==
@@ -151,7 +216,19 @@ app.get("/api/users:_id/exercises", (req, res) => {
 // 1- ::GET => /api/users end-point
 
 app.get("/api/users/:_id/logs", (req, res) => {
-  res.json("");
+  const requestedUserId = req.params._id;
+
+  //   matchedUser = usersLogs.find((user) => {
+  //     return user._id === requestedUserId;
+
+  //     console.log("The Matched User from the GET Req :: 👇");
+  //     console.log(matchedUser);
+  //     console.log(`-------------------------
+  //     -------------------------
+  // `);
+  //   });
+
+  // res.json(matchedUser);
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
