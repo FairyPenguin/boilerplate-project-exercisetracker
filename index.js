@@ -132,10 +132,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
 
   const description = String(req.body.description);
   const duration = parseInt(req.body.duration);
-  let date = new Date(req.body.date);
+  let date = req.body.date;
   const userIdParam = req.params._id;
   console.log(userIdParam);
+
+  // check for the date property existing
   if (!date || date === "") {
+    // if not exists send the date of the day formatted to DateString
     date = new Date().toDateString();
   }
 
@@ -156,7 +159,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     _id: matchedUser._id,
     description: description,
     duration: duration,
-    date: date.toDateString(),
+    date: new Date(date).toDateString(),
   });
 
   console.log("Returned Res for the matched user");
@@ -194,7 +197,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     _id: matchedUser._id,
     description: description,
     duration: parseInt(duration),
-    date: date.toDateString(),
+    date: new Date(date).toDateString(),
   });
 
   console.log("After the Log Added 👇👇👇👇👇");
