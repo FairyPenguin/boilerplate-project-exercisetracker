@@ -54,8 +54,11 @@ users.find((user) => {
 // }
 
 // Users Array
-const usersArray = ["users Array"];
+console.log("users Array 👇👇");
+const usersArray = [];
 console.log(usersArray);
+console.log("users Array ---------End--------");
+
 // UsersLogs Array
 
 const usersLogs = [];
@@ -150,17 +153,26 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     username: matchedUser.username,
     _id: matchedUser._id,
     description: description,
-    duration: duration,
+    duration: parseInt(duration),
+    date: date,
+  });
+
+  console.log("Returned Res for the matched user");
+  console.log({
+    username: matchedUser.username,
+    _id: matchedUser._id,
+    description: description,
+    duration: parseInt(duration),
     date: date,
   });
 
   console.log(usersArray);
 
-  let matchedUserId = usersArray.find((user) => {
-    return user._id === userIdParam;
-  });
+  // let matchedUserId = usersArray.find((user) => {
+  //   return user._id === userIdParam;
+  // });
 
-  console.log(matchedUserId);
+  // console.log(matchedUserId);
 
   // pusth the exercise data to the log array
 
