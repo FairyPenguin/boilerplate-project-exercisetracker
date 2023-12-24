@@ -228,6 +228,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
   //qyery params {from - to - limit}
   const { from, to, limit } = req.query;
 
+  console.log(requestedUserId);
   console.log({ from: from, to: to, limit: limit });
 
   matchedRequestedUser = usersLogs.find((user) => {
@@ -236,6 +237,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
   if (!from && !to && !limit) {
     res.json(matchedRequestedUser);
+    console.log(matchedRequestedUser);
+    console.log("NO Q");
   }
 
   if (from && to && limit) {
@@ -243,8 +246,6 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const toDate = new Date(to);
 
     let userLogs = matchedRequestedUser.log;
-    console.log("THE USER LOGS");
-    console.log(userLogs);
 
     let filteredLogs = userLogs.filter((log) => {
       const logDate = new Date(log.date);
@@ -256,10 +257,11 @@ app.get("/api/users/:_id/logs", (req, res) => {
     matchedRequestedUser.log = limitedLogs;
 
     res.json(matchedRequestedUser);
+    console.log(matchedRequestedUser);
+    console.log("3 Q");
   }
 
   if (!from && !to && limit) {
-    
     let userLogs = matchedRequestedUser.log;
 
     const limitedLogs = userLogs.slice(0, parseInt(limit));
@@ -267,6 +269,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     matchedRequestedUser.log = limitedLogs;
 
     res.json(matchedRequestedUser);
+    console.log(matchedRequestedUser);
+    console.log("L Q");
   }
 
   if (from && to && !limit) {
@@ -274,8 +278,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const toDate = new Date(to);
 
     let userLogs = matchedRequestedUser.log;
-    console.log("THE USER LOGS");
-    console.log(userLogs);
+    // console.log("THE USER LOGS");
+    // console.log(userLogs);
 
     let filteredLogs = userLogs.filter((log) => {
       const logDate = new Date(log.date);
@@ -285,6 +289,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     matchedRequestedUser.log = filteredLogs;
 
     res.json(matchedRequestedUser);
+    console.log(matchedRequestedUser);
+    console.log("D Q");
   }
 
   console.log("The  the GET Req ::");
