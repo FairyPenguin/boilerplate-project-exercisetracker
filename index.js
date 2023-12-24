@@ -247,15 +247,15 @@ app.get("/api/users/:_id/logs", (req, res) => {
   }
 
   if (from && to && limit) {
-    const fromDate = new Date(from).toDateString();
-    const toDate = new Date(to).toDateString();
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
 
     let userLogs = matchedRequestedUser.log;
     console.log("THE USER LOGS");
     console.log(userLogs);
 
     let filteredLogs = userLogs.filter((log) => {
-      const logDate = log.date;
+      const logDate = new Date(log.date);
       return logDate >= fromDate && logDate <= toDate;
     });
 
@@ -282,15 +282,15 @@ app.get("/api/users/:_id/logs", (req, res) => {
   }
 
   if (from && to && !limit) {
-    const fromDate = new Date(from).toDateString();
-    const toDate = new Date(to).toDateString();
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
 
     let userLogs = matchedRequestedUser.log;
     console.log("THE USER LOGS");
     console.log(userLogs);
 
     let filteredLogs = userLogs.filter((log) => {
-      const logDate = log.date;
+      const logDate = new Date(log.date);
       return logDate >= fromDate && logDate <= toDate;
     });
 
