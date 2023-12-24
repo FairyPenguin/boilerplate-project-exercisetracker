@@ -255,6 +255,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
     matchedRequestedUser.log = limitedLogs;
+    matchedRequestedUser.count = limitedLogs.length;
 
     res.json(matchedRequestedUser);
     console.log(matchedRequestedUser);
@@ -267,6 +268,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const limitedLogs = userLogs.slice(0, parseInt(limit));
 
     matchedRequestedUser.log = limitedLogs;
+    matchedRequestedUser.count = limitedLogs.length;
 
     res.json(matchedRequestedUser);
     console.log(matchedRequestedUser);
@@ -287,6 +289,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     });
 
     matchedRequestedUser.log = filteredLogs;
+    matchedRequestedUser.count = filteredLogs.length;
 
     res.json(matchedRequestedUser);
     console.log(matchedRequestedUser);
@@ -301,6 +304,6 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
 // Server listens on port 3000
 
-const listener = app.listen(process.env.PORT || 3000, () => {
+const listener = app.listen(process.env.PORT || 8800, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
