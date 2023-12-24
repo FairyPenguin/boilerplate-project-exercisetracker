@@ -228,19 +228,11 @@ app.get("/api/users/:_id/logs", (req, res) => {
   //qyery params {from - to - limit}
   const { from, to, limit } = req.query;
 
-  log(from, to, limit);
+  console.log({ from: from, to: to, limit: limit });
 
   matchedRequestedUser = usersLogs.find((user) => {
     return user._id === requestedUserId;
   });
-
-  // const From = "Mon Jan 01 1990";
-  // const To = "Tue Jun 06 2006";
-  // const Limit = 3;
-
-  // const From = undefined;
-  // const To = undefined;
-  // const Limit = undefined;
 
   if (!from && !to && !limit) {
     res.json(matchedRequestedUser);
@@ -262,22 +254,15 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
     matchedRequestedUser.log = limitedLogs;
-    // console.log("limitedLogs *****");
-    // console.log(limitedLogs);
 
     res.json(matchedRequestedUser);
   }
 
   if (!from && !to && limit) {
+    
     let userLogs = matchedRequestedUser.log;
 
-    console.log("THE USER LOGS");
-    console.log(userLogs);
-
     const limitedLogs = userLogs.slice(0, parseInt(limit));
-
-    // console.log("limitedLogs *****");
-    // console.log(limitedLogs);
 
     matchedRequestedUser.log = limitedLogs;
 
@@ -302,40 +287,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     res.json(matchedRequestedUser);
   }
 
-  // if (from && to && limit) {
-  //   const fromDate = new Date(from).toDateString();
-  //   const toDate = new Date(to).toDateString();
-
-  //   let userLogs = matchedRequestedUser.log;
-  //   console.log("THE USER LOGS");
-  //   console.log(userLogs);
-
-  //   let filteredLogs = userLogs.filter((log) => {
-  //     const logDate = log.date;
-  //     return logDate >= fromDate && logDate <= toDate;
-  //   });
-
-  //   const limitedLogs = filteredLogs.slice(0, parseInt(limit));
-
-  //   console.log("limitedLogs *****");
-  //   console.log(limitedLogs);
-
-  //   res.json(limitedLogs);
-  // } else {
-  //   res.json(matchedRequestedUser);
-  // }
-
-  // res.json({
-  //   requestedUserId: requestedUserId,
-  //   from: from,
-  //   to: to,
-  //   limit: limit,
-  //   // logs: userLogs,
-  // });
-
-  console.log("The Matched User from the GET Req :: 👇");
-  // console.log(matchedRequestedUsermatchedRequestedUser);
-  // res.json(matchedRequestedUser);
+  console.log("The  the GET Req ::");
   console.log("-----------End-----------");
 });
 
