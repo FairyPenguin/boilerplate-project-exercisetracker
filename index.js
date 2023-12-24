@@ -261,10 +261,11 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
-    console.log("limitedLogs *****");
-    console.log(limitedLogs);
+    matchedRequestedUser.log = limitedLogs;
+    // console.log("limitedLogs *****");
+    // console.log(limitedLogs);
 
-    res.json(limitedLogs);
+    res.json(matchedRequestedUser);
   }
 
   if (!from && !to && limit) {
@@ -275,10 +276,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
     const limitedLogs = userLogs.slice(0, parseInt(limit));
 
-    console.log("limitedLogs *****");
-    console.log(limitedLogs);
+    // console.log("limitedLogs *****");
+    // console.log(limitedLogs);
 
-    res.json(limitedLogs);
+    matchedRequestedUser.log = limitedLogs;
+
+    res.json(matchedRequestedUser);
   }
 
   if (from && to && !limit) {
@@ -294,7 +297,9 @@ app.get("/api/users/:_id/logs", (req, res) => {
       return logDate >= fromDate && logDate <= toDate;
     });
 
-    res.json(filteredLogs);
+    matchedRequestedUser.log = filteredLogs;
+
+    res.json(matchedRequestedUser);
   }
 
   // if (from && to && limit) {
