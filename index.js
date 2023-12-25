@@ -232,7 +232,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log({ from: from, to: to, limit: limit });
 
   // Matched User
-  const matchedRequestedUser = importedlogs.find((user) => {
+  const matchedRequestedUser = usersLogs.find((user) => {
     return user._id === requestedUserId;
   });
 
@@ -320,12 +320,10 @@ app.get("/api/users/:_id/logs", (req, res) => {
     matchedUserCopy.count = filteredLogs.length;
 
     res.json(matchedUserCopy);
+
     console.log(matchedUserCopy);
     console.log("D Q");
   }
-
-  console.log("The  the GET Req ::");
-  console.log("-----------End-----------");
 });
 
 // :: ->> Logic functions
