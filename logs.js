@@ -6,9 +6,24 @@ const logs = [
     _id: "5fb5853f734231456ccb3b05",
     log: [
       {
-        description: "test",
+        description: "1",
         duration: 60,
-        date: "Mon Jan 01 1990",
+        date: "Sat Jan 01 2000",
+      },
+      {
+        description: "3",
+        duration: 60,
+        date: "Mon Jan 03 2000",
+      },
+      {
+        description: "5",
+        duration: 60,
+        date: "Wed Jan 05 2000",
+      },
+      {
+        description: "6",
+        duration: 60,
+        date: "Thu Jan 06 2000",
       },
     ],
   },

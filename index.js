@@ -261,7 +261,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
     // filter based on the from - to dates
     const filteredLogs = matchedUserCopy.log.filter((log) => {
-      return log.date >= fromDate && log.date <= toDate;
+      const logDate = log.date.getTime();
+      return logDate >= fromDate.getTime() && logDate <= toDate.getTime();
     });
 
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
@@ -311,7 +312,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
     });
 
     const filteredLogs = matchedUserCopy.log.filter((log) => {
-      return log.date >= fromDate && log.date <= toDate;
+      const logDate = log.date.getTime();
+      return logDate >= fromDate.getTime() && logDate <= toDate.getTime();
     });
 
     matchedUserCopy.log = filteredLogs;
