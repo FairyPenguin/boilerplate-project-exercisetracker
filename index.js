@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const crypto = require("crypto");
 
-const logs = require("./logs");
+const importedlogs = require("./logs");
 const { log } = require("console");
 
 app.use(cors());
@@ -56,16 +56,16 @@ users.find((user) => {
 // }
 
 // Users Array
-console.log("users Array 👇👇");
+// console.log("users Array 👇👇");
 const usersArray = [];
-console.log(usersArray);
-console.log("users Array ---------End--------");
+// console.log(usersArray);
+// console.log("users Array ---------End--------");
 
 // UsersLogs Array
-console.log("usersLogs Array 👇👇");
+// console.log("usersLogs Array 👇👇");
 const usersLogs = [];
-console.log(usersLogs);
-console.log("users Logs ---------End--------");
+// console.log(usersLogs);
+// console.log("users Logs ---------End--------");
 
 // ::
 //  ==>--------First route end-points----------<==
@@ -114,7 +114,7 @@ app.get("/api/users", (req, res) => {
   res.json(usersArray);
 
   console.log("Users Array from GET req to /api/users 👇");
-  console.log(usersArray);
+  // console.log(usersArray);
   console.log(`-------------------------
                -------------------------
   `);
@@ -165,15 +165,15 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   });
 
   console.log("Returned Res for the matched user");
-  console.log({
-    username: matchedUser.username,
-    _id: matchedUser._id,
-    description: description,
-    duration: parseInt(duration),
-    date: date,
-  });
+  // console.log({
+  //   username: matchedUser.username,
+  //   _id: matchedUser._id,
+  //   description: description,
+  //   duration: parseInt(duration),
+  //   date: date,
+  // });
 
-  console.log(usersArray);
+  // console.log(usersArray);
 
   // :: Check for the log property exsits in the matcherUser object
 
@@ -203,7 +203,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   });
 
   console.log("After the Log Added 👇👇👇👇👇");
-  console.log(matchedUser);
+  // console.log(matchedUser);
 
   // Push to the users logs array
 
@@ -212,7 +212,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   console.log("The Log Array from POST Req :: after push user-excer-data 👇");
 
   console.log("The usersLogs Array from POST Req :: 👇");
-  console.log(usersLogs);
+  // console.log(usersLogs);
   console.log(`--------------End of usersLogs in /logs-----------`);
 });
 
@@ -231,7 +231,8 @@ app.get("/api/users/:_id/logs", (req, res) => {
   console.log(requestedUserId);
   console.log({ from: from, to: to, limit: limit });
 
-  matchedRequestedUser = usersLogs.find((user) => {
+  // Matched User
+  const matchedRequestedUser = importedlogs.find((user) => {
     return user._id === requestedUserId;
   });
 
@@ -245,33 +246,50 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
-    let userLogs = matchedRequestedUser.log;
+    // Local matched user copy
+    const matchedUserCopy = {
+      ...matchedRequestedUser,
+      log: matchedRequestedUser.log.map((log) => ({ ...log })),
+    };
+    // Log Array
+    // const userLogs = matchedUser.log;
 
-    let filteredLogs = userLogs.filter((log) => {
-      const logDate = new Date(log.date);
-      return logDate >= fromDate && logDate <= toDate;
+    //format dates
+    matchedUserCopy.log.forEach((exercise) => {
+      exercise.date = new Date(exercise.date);
+    });
+
+    // filter based on the from - to dates
+    const filteredLogs = matchedUserCopy.log.filter((log) => {
+      return log.date >= fromDate && log.date <= toDate;
     });
 
     const limitedLogs = filteredLogs.slice(0, parseInt(limit));
 
-    matchedRequestedUser.log = limitedLogs;
-    matchedRequestedUser.count = limitedLogs.length;
+    matchedUserCopy.log = limitedLogs;
+    matchedUserCopy.count = limitedLogs.length;
 
-    res.json(matchedRequestedUser);
-    console.log(matchedRequestedUser);
+    res.json(matchedUserCopy);
+    console.log(matchedUserCopy);
     console.log("3 Q");
   }
 
   if (!from && !to && limit) {
-    let userLogs = matchedRequestedUser.log;
+    // Local matched user copy
+    const matchedUserCopy = {
+      ...matchedRequestedUser,
+      log: matchedRequestedUser.log.map((log) => ({ ...log })),
+    };
+    // Log Array
+    // const userLogs = matchedUserCopy.log;
 
-    const limitedLogs = userLogs.slice(0, parseInt(limit));
+    const limitedLogs = matchedUserCopy.log.slice(0, parseInt(limit));
 
-    matchedRequestedUser.log = limitedLogs;
-    matchedRequestedUser.count = limitedLogs.length;
+    matchedUserCopy.log = limitedLogs;
+    matchedUserCopy.count = limitedLogs.length;
 
-    res.json(matchedRequestedUser);
-    console.log(matchedRequestedUser);
+    res.json(matchedUserCopy);
+    console.log(matchedUserCopy);
     console.log("L Q");
   }
 
@@ -279,20 +297,28 @@ app.get("/api/users/:_id/logs", (req, res) => {
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
-    let userLogs = matchedRequestedUser.log;
-    // console.log("THE USER LOGS");
-    // console.log(userLogs);
+    // Local matched user copy
+    const matchedUserCopy = {
+      ...matchedRequestedUser,
+      log: matchedRequestedUser.log.map((log) => ({ ...log })),
+    };
 
-    let filteredLogs = userLogs.filter((log) => {
-      const logDate = new Date(log.date);
-      return logDate >= fromDate && logDate <= toDate;
+    // Log Array
+    // const userLogs = matchedUser.log;
+
+    matchedUserCopy.log.forEach((exercise) => {
+      exercise.date = new Date(exercise.date);
     });
 
-    matchedRequestedUser.log = filteredLogs;
-    matchedRequestedUser.count = filteredLogs.length;
+    const filteredLogs = matchedUserCopy.log.filter((log) => {
+      return log.date >= fromDate && log.date <= toDate;
+    });
 
-    res.json(matchedRequestedUser);
-    console.log(matchedRequestedUser);
+    matchedUserCopy.log = filteredLogs;
+    matchedUserCopy.count = filteredLogs.length;
+
+    res.json(matchedUserCopy);
+    console.log(matchedUserCopy);
     console.log("D Q");
   }
 
